@@ -1,6 +1,7 @@
 'use strict';
 
 const GPT3 = require(`./gpt3.js`);
+const axios = require('axios');
 
 var self;
 
@@ -42,7 +43,31 @@ class MessengerController {
 			let msgObject = self.getMessageObject(response);
 
 			// generate response from GPT-3
-			new GPT3(msgObject.id).response(msgObject.message);
+			let resMsg = new GPT3().response(msgObject.message);
+
+			// Define the message data to Facebook
+			const messageData = {
+				messaging_type: "RESPONSE", // or "MESSAGE_TAG" if applicable
+				recipient: {
+					id: msgObject.id // The ID of the user you want to send the message to
+				},
+				message: {
+					text: resMsg // The message content
+				}
+			};
+
+			// Make the API call to send a message to Facebook
+			axios.post('https://graph.facebook.com/v8.0/me/messages', messageData, {
+				params: { access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN }
+			})
+			.then(response => {
+
+				console.log('Message sent successfully:', response.data);
+			})
+			.catch(error => {
+
+				console.error('Error sending message:', error.message);
+			});			
 		}
 
 		// 200 OK
