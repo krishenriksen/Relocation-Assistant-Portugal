@@ -21,11 +21,13 @@ class GPT3 {
 	response = async (userId, prompt) => {
 
 		// instruct ChatGPT to only answer question about relocating to Portugal
+		/*
 		await openai.chat.completions.create({
 			model: "gpt-3.5-turbo",
 			messages: [{ role: "user", content: 'You are an Relocating Assistant for Portugal, you will only answer questions about Portugal. If people ask question about things not related to Portugal you will answer that you are not trained for this.' }],
 			max_tokens: 1,
 		});
+		*/
 
 		const stream = await openai.chat.completions.create({
 			model: "gpt-3.5-turbo",
