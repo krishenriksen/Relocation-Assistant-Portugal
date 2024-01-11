@@ -32,15 +32,15 @@ class GPT3 {
 
 			responseChunks.push(chunk.choices[0]?.delta?.content || "");
 
-			console.log(chunk.choices[0]?.delta?.content || "");
+			if (responseChunks.length >= 3) {
+			
+				// send response to Facebook user
+				new Facebook().send(userId, responseChunks.join(''));
+
+				// empty responseChunks
+				responseChunks = [];
+			}
 		}
-
-		const finalResponse = responseChunks.join('');
-
-		console.log(finalResponse);
-
-		// send response to Facebook user
-		new Facebook().send(userId, finalResponse);
 	}
 }
 

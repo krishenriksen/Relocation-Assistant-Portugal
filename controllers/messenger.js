@@ -20,7 +20,7 @@ class MessengerController {
 	 * @param {Object} res Response to browser
 	 * @returns JSON Object
 	 */
-	subscribe = function(req, res) {
+	subscribe = (req, res) => {
 
 		if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] == process.env.FACEBOOK_VERIFY_TOKEN) {
 
@@ -33,7 +33,7 @@ class MessengerController {
 		});
 	}
 
-	process = async function(req, res) {
+	process = (req, res) => {
 
 		const response = req.body;
 
@@ -42,7 +42,7 @@ class MessengerController {
 			let msgObject = self.getMessageObject(response);
 
 			// generate response from GPT-3 and send to Facebook
-			await new GPT3().response(msgObject.id, msgObject.message);
+			new GPT3().response(msgObject.id, msgObject.message);
 		}
 
 		// 200 OK
@@ -51,7 +51,7 @@ class MessengerController {
 		});
 	}
 
-	getMessageObject = function(json) {
+	getMessageObject = (json) => {
 
         const message = json.entry[0].messaging[0].message.text
         const id = json.entry[0].messaging[0].sender.id
