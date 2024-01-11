@@ -26,7 +26,7 @@ class GPT3 {
 			stream: true
 		});
 
-		const responseChunks = [];
+		let responseChunks = [];
 
 		for await (const chunk of stream) {
 
