@@ -20,36 +20,12 @@ class GPT3 {
 
 	response = async (userId, prompt) => {
 
-		// Get the conversation from the file
-		const filePath = userId + '.txt';
-
-		let data;
-
-		try {
-
-			data = jsonfile.readFileSync(filePath);
-			console.log('Data read from JSON file:', data);
-		}
-		catch {
-
-			// make user conversation file
-
-		}
-
-		// Check if the conversation has messages
-		if (data.length == 0) {
-
-			const initPrompt = 'You are an Relocating Assistant for Portugal, you will only answer questions about Portugal. If people ask question about things not related to Portugal you will answer that you are not trained for this.';
-
-			// instruct ChatGPT to only answer question about relocating to Portugal
-			await openai.chat.completions.create({
-				model: "gpt-3.5-turbo",
-				messages: [{ role: "user", content: initPrompt }],
-				max_tokens: 1,
-			});
-
-			//jsonfile.writeFileSync(filePath, initPrompt, { spaces: 2 });
-		}
+		// instruct ChatGPT to only answer question about relocating to Portugal
+		await openai.chat.completions.create({
+			model: "gpt-3.5-turbo",
+			messages: [{ role: "user", content: 'You are an Relocating Assistant for Portugal, you will only answer questions about Portugal. If people ask question about things not related to Portugal you will answer that you are not trained for this.' }],
+			max_tokens: 1,
+		});
 
 		const stream = await openai.chat.completions.create({
 			model: "gpt-3.5-turbo",
