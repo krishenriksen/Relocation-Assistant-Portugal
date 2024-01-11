@@ -34,7 +34,7 @@ class MessengerController {
 		});
 	}
 
-	process = function(req, res) {
+	process = async function(req, res) {
 
 		const response = req.body;
 
@@ -44,6 +44,8 @@ class MessengerController {
 
 			// generate response from GPT-3
 			let resMsg = new GPT3().response(msgObject.message);
+
+			console.log(resMsg);
 
 			// Define the message data to Facebook
 			const messageData = {
@@ -56,18 +58,11 @@ class MessengerController {
 				}
 			};
 
-			// Make the API call to send a message to Facebook
-			axios.post('https://graph.facebook.com/v8.0/me/messages', messageData, {
-				params: { access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN }
-			})
-			.then(response => {
+			const res = await axios.post('https://graph.facebook.com/v8.0/me/messages', messageData, {
+				params: { access_token: pageAccessToken }
+    		});
 
-				console.log('Message sent successfully:', response.data);
-			})
-			.catch(error => {
-
-				console.error('Error sending message:', error.message);
-			});			
+			console.log('Message sent successfully to facebook:', res.data);
 		}
 
 		// 200 OK
