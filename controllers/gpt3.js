@@ -41,6 +41,9 @@ class GPT3 {
 				responseChunks = [];
 			}
 		}
+
+		// send response to Facebook user
+		new Facebook().send(userId, responseChunks.join(''));
 	}
 }
 
