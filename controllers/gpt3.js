@@ -1,7 +1,7 @@
 'use strict';
 
 const { OpenAI } = require('openai');
-const request = require('request-promise');
+const axios = require('axios');
 
 const openai = new OpenAI({
 	organization: process.env.OPENAI_ORG,
@@ -26,28 +26,36 @@ class GPT3 {
 			stream: true
 		});
 
-		let response;
+		let response = '';
 
 		for await (const chunk of stream) {
 
 			response += chunk.choices[0]?.delta?.content || "";
 		}
 
-		const json = {
-            recipient: { userId },
-            message: { response }
-        }
+		// Define the message data
+		const messageData = {
+			messaging_type: "RESPONSE", // or "MESSAGE_TAG" if applicable
+			recipient: {
+				id: userId // The ID of the user you want to send the message to
+			},
+			message: {
+				text: response // The message content
+			}
+		};
 
-		const res = await request({
-            url: 'https://graph.facebook.com/v8.0/me/messages',
-            qs: {
-                access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN
-            },
-            json,
-            method: 'POST'
-        })
+		// Make the API call to send a message
+		axios.post('https://graph.facebook.com/v8.0/me/messages', messageData, {
+			params: { access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN }
+		})
+		.then(response => {
 
-        console.log('Facebook says: ', res);
+			console.log('Message sent successfully:', response.data);
+		})
+		.catch(error => {
+
+			console.error('Error sending message:', error.message);
+		});
 	}
 }
 
