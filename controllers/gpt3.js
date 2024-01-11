@@ -32,7 +32,7 @@ class GPT3 {
 
 			responseChunks.push(chunk.choices[0]?.delta?.content || "");
 
-			if (responseChunks.length >= 3) {
+			if (responseChunks.length >= 20) {
 			
 				// send response to Facebook user
 				new Facebook().send(userId, responseChunks.join(''));
