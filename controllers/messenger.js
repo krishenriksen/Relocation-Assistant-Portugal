@@ -59,7 +59,7 @@ class MessengerController {
 			};
 
 			const res = await axios.post('https://graph.facebook.com/v8.0/me/messages', messageData, {
-				params: { access_token: pageAccessToken }
+				params: { access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN }
     		});
 
 			console.log('Message sent successfully to facebook:', res.data);
