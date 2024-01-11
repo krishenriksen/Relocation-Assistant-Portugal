@@ -1,7 +1,7 @@
 'use strict';
 
 const { OpenAI } = require('openai');
-const request = require('./requestPromise');
+const request = require('request-promise');
 
 const openai = new OpenAI({
 	organization: process.env.OPENAI_ORG,
