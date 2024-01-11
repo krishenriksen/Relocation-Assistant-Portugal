@@ -22,9 +22,19 @@ class GPT3 {
 
 		// Get the conversation from the file
 		const filePath = userId + '.txt';
-		const data = jsonfile.readFileSync(filePath);
 
-		console.log('Data read from JSON file:', data);
+		let data;
+
+		try {
+
+			data = jsonfile.readFileSync(filePath);
+			console.log('Data read from JSON file:', data);
+		}
+		catch {
+
+			// make user conversation file
+
+		}
 
 		// Check if the conversation has messages
 		if (data.length == 0) {
