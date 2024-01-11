@@ -31,19 +31,13 @@ class GPT3 {
 		for await (const chunk of stream) {
 
 			responseChunks.push(chunk.choices[0]?.delta?.content || "");
-
-			if (responseChunks.length >= 20) {
-			
-				// send response to Facebook user
-				new Facebook().send(userId, responseChunks.join(''));
-
-				// empty responseChunks
-				responseChunks = [];
-			}
 		}
 
 		// send response to Facebook user
 		new Facebook().send(userId, responseChunks.join(''));
+
+		// empty responseChunks
+		responseChunks = [];
 	}
 }
 
