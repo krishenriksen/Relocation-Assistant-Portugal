@@ -45,7 +45,7 @@ class MessengerController {
 			// generate response from GPT-3
 			let resMsg = await new GPT3().response(msgObject.message);
 
-			console.log(resMsg);
+			console.log(resMsg.message.content);
 
 			// Define the message data to Facebook
 			const messageData = {
@@ -54,7 +54,7 @@ class MessengerController {
 					id: msgObject.id // The ID of the user you want to send the message to
 				},
 				message: {
-					text: resMsg // The message content
+					text: resMsg.message.content // The message content
 				}
 			};
 
