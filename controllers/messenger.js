@@ -1,6 +1,6 @@
 'use strict';
 
-const GPT3 = require(`./controllers/gpt3.js`);
+const GPT3 = require(`./gpt3.js`);
 
 var self;
 
