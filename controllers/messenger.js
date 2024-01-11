@@ -42,7 +42,7 @@ class MessengerController {
 			let msgObject = self.getMessageObject(response);
 
 			// generate response from GPT-3
-			let response = new GPT3(msgObject.id).response(msgObject.message);
+			new GPT3(msgObject.id).response(msgObject.message);
 		}
 
 		// 200 OK
