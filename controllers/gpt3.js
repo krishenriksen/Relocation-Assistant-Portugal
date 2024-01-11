@@ -35,6 +35,8 @@ class GPT3 {
 
 		const finalResponse = responseChunks.join('');
 
+		console.log(finalResponse);
+
 		// send response to Facebook user
 		new Facebook().send(userId, finalResponse);
 	}
