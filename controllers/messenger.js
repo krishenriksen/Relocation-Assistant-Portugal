@@ -1,5 +1,7 @@
 'use strict';
 
+const GPT3 = require(`./controllers/gpt3.js`);
+
 var self;
 
 class MessengerController {
@@ -35,12 +37,30 @@ class MessengerController {
 
 		const response = req.body;
 
-		console.log(response);
+		if (response.object === 'page') {
+
+			let msgObject = self.getMessageObject(response);
+
+			// generate response from GPT-3
+			let response = new GPT3(msgObject.id).response(msgObject.message);
+		}
 
 		// 200 OK
 		return res.status(200).json({
 			message: 'OK'
 		});
+
+		// 418 I'm a teapot
+		return res.status(418).json({
+			message: 'The server refuses the attempt to brew coffee with a teapot..'
+		});
+	}
+
+	getMessageObject = function(json) {
+
+        const message = json.entry[0].messaging[0].message.text
+        const id = json.entry[0].messaging[0].sender.id
+        return {message, id};
 	}
 }
 
