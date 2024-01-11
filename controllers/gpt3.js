@@ -2,20 +2,12 @@
 
 const { OpenAI } = require('openai');
 const Facebook = require(`./facebook.js`);
-
-import low from 'lowdb';
-import FileSync from 'lowdb/adapters/FileSync';
+const jsonfile = require('jsonfile');
 
 const openai = new OpenAI({
 	organization: process.env.OPENAI_ORG,
 	apiKey: process.env.OPENAI_SECRET_KEY
 });
-
-const adapter = new FileSync('db.json'); // Specify the JSON file where data will be stored
-const db = low(adapter);
-
-// Set up initial structure if the file is empty
-db.defaults({ conversations: [] }).write();
 
 var self;
 
@@ -28,30 +20,31 @@ class GPT3 {
 
 	response = async (userId, prompt) => {
 
-		// Get the conversation from the database
-		const conversation = db.get('conversations').find({ id: userId }).value();
+		// Get the conversation from the file
+		const filePath = userId + '.txt';
+		const data = jsonfile.readFileSync(filePath);
+
+		console.log('Data read from JSON file:', data);
 
 		// Check if the conversation has messages
-		if (conversation.messages.length == 0) {
+		if (data.length == 0) {
+
+			const initPrompt = 'You are an Relocating Assistant for Portugal, you will only answer questions about Portugal. If people ask question about things not related to Portugal you will answer that you are not trained for this.';
 
 			// instruct ChatGPT to only answer question about relocating to Portugal
 			await openai.chat.completions.create({
 				model: "gpt-3.5-turbo",
-				messages: [{ role: "user", content: 'You are an Relocating Assistant for Portugal, you will only answer questions about Portugal. If people ask question about things not related to Portugal you will answer that you are not trained for this.' }],
+				messages: [{ role: "user", content: initPrompt }],
 				max_tokens: 1,
 			});
+
+			//jsonfile.writeFileSync(filePath, initPrompt, { spaces: 2 });
 		}
-
-		conversation.messages.push(prompt);
-
-		const messagesAsString = conversation.messages ? conversation.messages.join('\n') : '';
-
-		console.log(messagesAsString);
 
 		const stream = await openai.chat.completions.create({
 			model: "gpt-3.5-turbo",
 			max_tokens: 256,
-			messages: [{ role: "user", content: messagesAsString }],
+			messages: [{ role: "user", content: prompt }],
 			stream: true
 		});
 
