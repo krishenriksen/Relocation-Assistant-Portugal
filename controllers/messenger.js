@@ -34,7 +34,7 @@ class MessengerController {
 		});
 	}
 
-	process = async function(req, res) {
+	process = function(req, res) {
 
 		const response = req.body;
 
@@ -58,7 +58,7 @@ class MessengerController {
 				}
 			};
 
-			const res = await axios.post('https://graph.facebook.com/v8.0/me/messages', messageData, {
+			const res = axios.post('https://graph.facebook.com/v8.0/me/messages', messageData, {
 				params: { access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN }
     		});
 
