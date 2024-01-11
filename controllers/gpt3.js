@@ -16,15 +16,15 @@ class GPT3 {
 		self = this;
 	}
 
-	response = (prompt) => {
+	response = async (prompt) => {
 
-		const completion = openai.chat.completions.create({
+		console.log(prompt);
+
+		const completion = await openai.chat.completions.create({
 			model: "gpt-3.5-turbo",
 			messages: [{ role: "user", content: prompt }],
 			max_tokens: 1000,
 		});
-
-		console.log(completion.choices[0]);
 
 		return completion.choices[0];
 	}
