@@ -25,6 +25,8 @@ class GPT3 {
 			max_tokens: 1000,
 		});
 
+		console.log(completion.choices[0]);
+
 		// Define the message data to Facebook
 		const messageData = {
 			messaging_type: "RESPONSE", // or "MESSAGE_TAG" if applicable
