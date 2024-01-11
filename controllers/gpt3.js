@@ -2,8 +2,9 @@
 
 const { OpenAI } = require('openai');
 const Facebook = require(`./facebook.js`);
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
+
+import low from 'lowdb';
+import FileSync from 'lowdb/adapters/FileSync';
 
 const openai = new OpenAI({
 	organization: process.env.OPENAI_ORG,
