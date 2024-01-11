@@ -30,7 +30,7 @@ class GPT3 {
 
 		for await (const chunk of stream) {
 
-			responseChunks.push(chunk.choices[0].message.content);
+			responseChunks.push(chunk.choices[0]?.delta?.content || "");
 		}
 
 		const finalResponse = responseChunks.join('');
