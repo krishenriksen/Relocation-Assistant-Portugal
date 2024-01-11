@@ -1,0 +1,29 @@
+{
+    "name": "relocation-assistant-portugal",
+    "version": "0.0.1",
+    "description": "RESTful API for Instant Relocation AI Assistant Portugal",
+    "main": "api.js",
+    "private": true,
+    "scripts": {
+		"start": "node api.js",
+        "dev": "node --watch api.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Relocation-Assistant-Portugal/api.git"
+    },
+    "author": "Kris Henriksen",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Relocation-Assistant-Portugal/api/issues"
+    },
+    "homepage": "https://www.aigo.dev/",
+    "dependencies": {
+        "body-parser": "^1.20.0",
+		"mongo-sanitize": "^1.1.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.1",
+        "express": "^4.18.1",
+        "winston": "^3.8.2"
+    }
+}
