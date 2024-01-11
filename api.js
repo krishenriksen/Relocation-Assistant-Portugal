@@ -48,6 +48,6 @@ app.use(function(req, res) {
 
 // Create an HTTPS service identical to the HTTP service.
 https.createServer({
-	key: fs.readFileSync('/etc/letsencrypt/live/api.aigo.dev/privkey.pem'),
-	cert: fs.readFileSync('/etc/letsencrypt/live/api.aigo.dev/fullchain.pem')
+	key: fs.readFileSync('/home/ubuntu/privkey.pem'),
+	cert: fs.readFileSync('/home/ubuntu/fullchain.pem')
 }, app).listen(process.env.PORT);
