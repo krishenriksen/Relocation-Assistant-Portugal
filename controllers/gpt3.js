@@ -26,21 +26,17 @@ class GPT3 {
 			stream: true
 		});
 
+		const responseChunks = [];
+
 		for await (const chunk of stream) {
 
-			// send response to Facebook user
-			new Facebook().send(userId, chunk.choices[0]?.delta?.content || "");
+			responseChunks.push(chunk.choices[0].message.content);
 		}
 
-		/*
-		const completion = await openai.chat.completions.create({
-			model: "gpt-3.5-turbo",
-			messages: [{ role: "user", content: prompt }],
-			max_tokens: 1000,
-		});
+		const finalResponse = responseChunks.join('');
 
-		return completion.choices[0];
-		*/
+		// send response to Facebook user
+		new Facebook().send(userId, finalResponse);
 	}
 }
 
