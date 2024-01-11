@@ -19,42 +19,34 @@ class GPT3 {
 
 	response = async (userId, prompt) => {
 
-		// Make the API call
-		openai.Completion.create({
-			engine: "gpt-3.5-turbo",
-			prompt: prompt,
+		const completion = await openai.chat.completions.create({
+			model: "gpt-3.5-turbo",
+			messages: [{ role: "user", content: prompt }],
 			max_tokens: 1000,
-			n: 1, // Specify the number of completions you want (in this case, 1)
+		});
+
+		// Define the message data to Facebook
+		const messageData = {
+			messaging_type: "RESPONSE", // or "MESSAGE_TAG" if applicable
+			recipient: {
+				id: userId // The ID of the user you want to send the message to
+			},
+			message: {
+				text: completion.choices[0] // The message content
+			}
+		};
+
+		// Make the API call to send a message to Facebook
+		axios.post('https://graph.facebook.com/v8.0/me/messages', messageData, {
+			params: { access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN }
 		})
 		.then(response => {
 
-			// Define the message data to Facebook
-			const messageData = {
-				messaging_type: "RESPONSE", // or "MESSAGE_TAG" if applicable
-				recipient: {
-					id: userId // The ID of the user you want to send the message to
-				},
-				message: {
-					text: response.choices[0].text.trim() // The message content
-				}
-			};
-
-			// Make the API call to send a message to Facebook
-			axios.post('https://graph.facebook.com/v8.0/me/messages', messageData, {
-				params: { access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN }
-			})
-			.then(response => {
-
-				console.log('Message sent successfully:', response.data);
-			})
-			.catch(error => {
-
-				console.error('Error sending message:', error.message);
-			});
+			console.log('Message sent successfully:', response.data);
 		})
 		.catch(error => {
 
-			console.error('Error making API call:', error.message);
+			console.error('Error sending message:', error.message);
 		});
 	}
 }
