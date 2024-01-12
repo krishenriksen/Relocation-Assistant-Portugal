@@ -29,7 +29,7 @@ class GPT3 {
 
 		const msgObject = self.getConversation(userId);
 
-		console.log(msgObject.length);
+		console.log(msgObject);
 
 		if (msgObject.length === 0) {
 
