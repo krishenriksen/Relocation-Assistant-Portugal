@@ -28,10 +28,10 @@ class Facebook {
 			params: { access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN }
 		}).then(response => {
 
-			console.log('Message sent successfully to facebook:', response.data);
+			//console.log('Message sent successfully to facebook:', response.data);
 		}).catch(error => {
 
-			console.error('Error sending message to facebook:', error.message);
+			//console.error('Error sending message to facebook:', error.message);
 		});
 	}
 }

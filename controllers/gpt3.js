@@ -29,12 +29,12 @@ class GPT3 {
 
 		const msgObject = self.getConversation(userId);
 
-		if (msgObject.length == 0) {
+		if (msgObject.length === 0) {
 
 			// init conversation file storage
 			//self.putConversation(userId, 'system', 'You are an Relocating Assistant for Portugal, you will answer questions about relocating to Portugal. You will only speak English to people. Once in a while you will ask for donation to keep this service running using this link https://www.paypal.me/krishenriksendk');
 
-			self.putConversation(userId, 'system', 'You are a helpful Relocating Assistant for Portugal. Once in a while you will ask for donation to keep this service running using this link https://www.paypal.me/krishenriksendk');
+			self.putConversation(userId, 'system', 'You are a helpful Relocating Assistant for Portugal. Once in a while you will ask for donation to keep this service running using this link www.paypal.me/krishenriksendk');
 		}
 
 		// store prompt to conversations
@@ -110,12 +110,10 @@ class GPT3 {
 			messagesArray = conversationObject.messages || [];
 		}
 
-		const reversedMessagesArray = messagesArray.reverse();
-
   		// Now we have an array of messages
-  		console.log(reversedMessagesArray);
+  		console.log(messagesArray);
 
-		return reversedMessagesArray;
+		return messagesArray;
     }
 }
 
