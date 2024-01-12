@@ -40,7 +40,7 @@ class GPT3 {
 
 		const stream = await openai.chat.completions.create({
 			model: "gpt-3.5-turbo",
-			max_tokens: 256,
+			max_tokens: 100,
 			messages: self.getConversation(userId),
 			stream: true
 		});
@@ -51,7 +51,6 @@ class GPT3 {
 
 			responseChunks.push(chunk.choices[0]?.delta?.content || "");
 
-			/*
 			if (responseChunks.length >= 100) {
 			
 				// send response to Facebook user
@@ -63,7 +62,6 @@ class GPT3 {
 				// empty responseChunks
 				responseChunks = [];
 			}
-			*/
 		}
 
 		if (responseChunks.length > 0) {
@@ -73,9 +71,6 @@ class GPT3 {
 
 			// store conversation
 			self.putConversation(userId, 'assistant', responseChunks.join(''));
-
-			// empty responseChunks
-			responseChunks = [];
 		}
 	}
 
