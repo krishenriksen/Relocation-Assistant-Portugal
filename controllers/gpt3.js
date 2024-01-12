@@ -27,11 +27,9 @@ class GPT3 {
 
 	response = async (userId, prompt) => {
 
-		let messages = self.getConversation(userId);
+		let msgObject = self.getConversation(userId);
 
-		console.log(messages);
-
-		if (!messages) {
+		if (msgObject.length === 0) {
 
 			// init conversation file storage
 			self.putConversation(userId, 'system', 'You are an Relocating Assistant for Portugal, you will only answer questions about Portugal. If people ask question about things not related to Portugal you will answer that you are not trained for this.');
@@ -100,8 +98,12 @@ class GPT3 {
 	*/	
 	getConversation = (userId) => {
 
-        // Load and return the conversation from the database for a specific user
-        return db.get('conversations').find({ userId }).value();
+		// Load and return the conversation from the database for a specific user
+		const msgObject = db.get('conversations').find({ userId }).value();
+
+		console.log(msgObject);
+
+		return msgObject;
     }
 }
 
