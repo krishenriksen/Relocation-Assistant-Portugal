@@ -27,9 +27,9 @@ class GPT3 {
 
 	response = async (userId, prompt) => {
 
-		let msgObject = self.getConversation(userId);
+		const msgObject = self.getConversation(userId);
 
-		if (!msgObject) {
+		if (msgObject.length == 0) {
 
 			// init conversation file storage
 			self.putConversation(userId, 'system', 'You are an Relocating Assistant for Portugal, you will only answer questions about Portugal. If people ask question about things not related to Portugal you will answer that you are not trained for this.');
