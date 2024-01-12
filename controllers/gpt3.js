@@ -29,6 +29,8 @@ class GPT3 {
 
 		let messages = self.getConversation(userId);
 
+		console.log(messages);
+
 		if (!messages) {
 
 			// init conversation file storage
@@ -99,7 +101,7 @@ class GPT3 {
 	getConversation = (userId) => {
 
         // Load and return the conversation from the database for a specific user
-        return db.get('conversations').find({ userId }).get('conversation').value();
+        return db.get('conversations').find({ userId }).value();
     }
 }
 
