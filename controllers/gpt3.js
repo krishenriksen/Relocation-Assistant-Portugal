@@ -99,7 +99,10 @@ class GPT3 {
 	getConversation = (userId) => {
 
 		// Load and return the conversation from the database for a specific user
-		const messagesArray = db.filter({ userId: userId }).flatMap('messages').value();
+		const conversation = db.get('conversations').find({ userId: userId }).value();
+
+		// Extract the messages array from the conversation or default to an empty array
+		const messagesArray = (conversation && conversation.messages) || [];
 
 		// Now, 'messagesArray' is an array of all message objects for the specified userId
 		console.log(messagesArray);
