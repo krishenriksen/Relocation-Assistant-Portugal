@@ -57,7 +57,7 @@ class GPT3 {
 				new Facebook().send(userId, responseChunks.join(''));
 
 				// store conversation
-				self.putConversation(userId, 'assistant', responseChunks.join(''));
+				//self.putConversation(userId, 'assistant', responseChunks.join(''));
 
 				// empty responseChunks
 				responseChunks = [];
@@ -70,7 +70,7 @@ class GPT3 {
 			new Facebook().send(userId, responseChunks.join(''));
 
 			// store conversation
-			self.putConversation(userId, 'assistant', responseChunks.join(''));
+			//self.putConversation(userId, 'assistant', responseChunks.join(''));
 		}
 	}
 
