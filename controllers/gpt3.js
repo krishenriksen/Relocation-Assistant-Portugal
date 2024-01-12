@@ -40,7 +40,7 @@ class GPT3 {
 
 		const stream = await openai.chat.completions.create({
 			model: "gpt-3.5-turbo",
-			max_tokens: 100,
+			max_tokens: 1000,
 			messages: self.getConversation(userId),
 			stream: true
 		});
@@ -51,7 +51,7 @@ class GPT3 {
 
 			responseChunks.push(chunk.choices[0]?.delta?.content || "");
 
-			if (responseChunks.length >= 100) {
+			if (responseChunks.length >= 256) {
 			
 				// send response to Facebook user
 				new Facebook().send(userId, responseChunks.join(''));
