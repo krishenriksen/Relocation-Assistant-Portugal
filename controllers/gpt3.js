@@ -32,7 +32,7 @@ class GPT3 {
 		if (msgObject.length == 0) {
 
 			// init conversation file storage
-			self.putConversation(userId, 'system', 'You are an Relocating Assistant for Portugal, you will only answer questions about Portugal. If people ask question about things not related to Portugal you will answer that you are not trained for this.');
+			self.putConversation(userId, 'system', 'You are an Relocating Assistant for Portugal, you will only answer questions regarding everything Portugal. If people ask question about things not related to Portugal you will answer that you are not trained for this. You will only speak English to people. At the end of each response, you will ask for donation to keep this service running.');
 		}
 
 		// store prompt to conversations
