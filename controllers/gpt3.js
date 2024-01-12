@@ -40,7 +40,7 @@ class GPT3 {
 
 		const stream = await openai.chat.completions.create({
 			model: "gpt-3.5-turbo",
-			max_tokens: 1000,
+			max_tokens: 100,
 			messages: self.getConversation(userId),
 			stream: true
 		});
@@ -100,6 +100,9 @@ class GPT3 {
 
 		// Load and return the conversation from the database for a specific user
 		const conversationObject = db.get('conversations').find({ userId: userId }).value();
+
+		console.log(conversationObject);
+
 		let messagesArray = [];
 
 		if (conversationObject) {
