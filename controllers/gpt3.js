@@ -41,7 +41,7 @@ class GPT3 {
 		const stream = await openai.chat.completions.create({
 			model: "gpt-3.5-turbo",
 			max_tokens: 256,
-			messages: getConversation(userId),
+			messages: self.getConversation(userId),
 			stream: true
 		});
 
