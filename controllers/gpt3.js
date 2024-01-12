@@ -27,7 +27,7 @@ class GPT3 {
 
 	response = async (userId, prompt) => {
 
-		let messages = getConversation(userId);
+		let messages = self.getConversation(userId);
 
 		if (!messages) {
 
