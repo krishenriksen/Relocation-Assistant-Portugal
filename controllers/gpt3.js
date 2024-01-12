@@ -29,8 +29,6 @@ class GPT3 {
 
 		const msgObject = self.getConversation(userId);
 
-		console.log(msgObject);
-
 		if (msgObject.length === 0) {
 
 			// init conversation file storage
@@ -42,7 +40,7 @@ class GPT3 {
 
 		const stream = await openai.chat.completions.create({
 			model: "gpt-3.5-turbo",
-			max_tokens: 256,
+			max_tokens: 1000,
 			messages: self.getConversation(userId),
 			stream: true
 		});
