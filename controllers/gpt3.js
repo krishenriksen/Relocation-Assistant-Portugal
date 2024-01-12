@@ -29,7 +29,7 @@ class GPT3 {
 
 		let msgObject = self.getConversation(userId);
 
-		if (msgObject.length === 0) {
+		if (!msgObject) {
 
 			// init conversation file storage
 			self.putConversation(userId, 'system', 'You are an Relocating Assistant for Portugal, you will only answer questions about Portugal. If people ask question about things not related to Portugal you will answer that you are not trained for this.');
