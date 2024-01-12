@@ -2,7 +2,14 @@
 
 const { OpenAI } = require('openai');
 const Facebook = require(`./facebook.js`);
-const jsonfile = require('jsonfile');
+
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
+
+const adapter = new FileSync('db.json');
+const db = low(adapter);
+
+db.defaults({ conversations: [] }).write();
 
 const openai = new OpenAI({
 	organization: process.env.OPENAI_ORG,
@@ -20,19 +27,21 @@ class GPT3 {
 
 	response = async (userId, prompt) => {
 
-		// instruct ChatGPT to only answer question about relocating to Portugal
-		/*
-		await openai.chat.completions.create({
-			model: "gpt-3.5-turbo",
-			messages: [{ role: "user", content: 'You are an Relocating Assistant for Portugal, you will only answer questions about Portugal. If people ask question about things not related to Portugal you will answer that you are not trained for this.' }],
-			max_tokens: 1,
-		});
-		*/
+		let messages = getConversation(userId);
+
+		if (!messages) {
+
+			// init conversation file storage
+			self.putConversation(userId, 'system', 'You are an Relocating Assistant for Portugal, you will only answer questions about Portugal. If people ask question about things not related to Portugal you will answer that you are not trained for this.');
+		}
+
+		// store prompt to conversations
+		self.putConversation(userId, 'user', prompt);
 
 		const stream = await openai.chat.completions.create({
 			model: "gpt-3.5-turbo",
 			max_tokens: 256,
-			messages: [{ role: "user", content: prompt }],
+			messages: getConversation(userId),
 			stream: true
 		});
 
@@ -47,14 +56,51 @@ class GPT3 {
 				// send response to Facebook user
 				new Facebook().send(userId, responseChunks.join(''));
 
+				// store conversation
+				self.putConversation(userId, 'assistant', responseChunks.join(''));
+
 				// empty responseChunks
 				responseChunks = [];
 			}
 		}
 
-		// send response to Facebook user
-		new Facebook().send(userId, responseChunks.join(''));
+		if (responseChunks.length > 0) {
+
+			// send response to Facebook user
+			new Facebook().send(userId, responseChunks.join(''));
+
+			// store conversation
+			self.putConversation(userId, 'assistant', responseChunks.join(''));
+		}
 	}
+
+	/**
+	* store new prompt from user
+	* @author   Kris Henriksen
+	* @param    {Int} userId    user id from facebook messenger
+	* @param    {Int} role   	system, user, assistant
+	* @param    {Int} content   prompt for gpt
+	*/
+	putConversation = (userId, role, content) => {
+
+		const messages = [
+			{ role: role, content: content },
+		];
+
+		// Save the conversation to the database
+        db.get('conversations').push({ userId, messages }).write();
+	}
+
+	/**
+	* get all prompts from userid
+	* @author   Kris Henriksen
+	* @param    {Int} userId    user id from facebook messenger
+	*/	
+	getConversation = (userId) => {
+
+        // Load and return the conversation from the database for a specific user
+        return db.get('conversations').find({ userId }).get('conversation').value();
+    }
 }
 
 module.exports = GPT3;
