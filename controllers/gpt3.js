@@ -53,7 +53,7 @@ class GPT3 {
 
 			responseChunks.push(chunk.choices[0]?.delta?.content || "");
 
-			if (responseChunks.length >= 50) {
+			if (responseChunks.length >= 100) {
 			
 				// send response to Facebook user
 				new Facebook().send(userId, responseChunks.join(''));
@@ -110,10 +110,12 @@ class GPT3 {
 			messagesArray = conversationObject.messages || [];
 		}
 
-  		// Now we have an array of messages
-  		console.log(messagesArray);
+		const reversedMessagesArray = messagesArray.reverse();
 
-		return messagesArray;
+  		// Now we have an array of messages
+  		console.log(reversedMessagesArray);
+
+		return reversedMessagesArray;
     }
 }
 
